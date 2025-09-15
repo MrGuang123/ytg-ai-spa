@@ -1,0 +1,2 @@
+yarn lint:biome
+yarn test
