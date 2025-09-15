@@ -2,543 +2,539 @@
 /* tslint:disable */
 /* eslint-disable */
 import type {
-  BaseContract,
-  BigNumberish,
-  BytesLike,
-  FunctionFragment,
-  Result,
-  Interface,
-  EventFragment,
-  AddressLike,
-  ContractRunner,
-  ContractMethod,
-  Listener,
+	AddressLike,
+	BaseContract,
+	BigNumberish,
+	BytesLike,
+	ContractMethod,
+	ContractRunner,
+	EventFragment,
+	FunctionFragment,
+	Interface,
+	Listener,
+	Result,
 } from "ethers";
 import type {
-  TypedContractEvent,
-  TypedDeferredTopicFilter,
-  TypedEventLog,
-  TypedLogDescription,
-  TypedListener,
-  TypedContractMethod,
+	TypedContractEvent,
+	TypedContractMethod,
+	TypedDeferredTopicFilter,
+	TypedEventLog,
+	TypedListener,
+	TypedLogDescription,
 } from "./common";
 
 export interface RedEnvelopeInterface extends Interface {
-  getFunction(
-    nameOrSignature:
-      | "claimEnvelope"
-      | "createEnvelope"
-      | "envelopes"
-      | "getClaimAmount"
-      | "getClaimers"
-      | "getEnvelopeInfo"
-      | "getTotalEnvelopes"
-      | "hasClaimed"
-      | "nextEnvelopeId"
-      | "refundEnvelope"
-  ): FunctionFragment;
+	getFunction(
+		nameOrSignature:
+			| "claimEnvelope"
+			| "createEnvelope"
+			| "envelopes"
+			| "getClaimAmount"
+			| "getClaimers"
+			| "getEnvelopeInfo"
+			| "getTotalEnvelopes"
+			| "hasClaimed"
+			| "nextEnvelopeId"
+			| "refundEnvelope",
+	): FunctionFragment;
 
-  getEvent(
-    nameOrSignatureOrTopic:
-      | "EnvelopeClaimed"
-      | "EnvelopeCompleted"
-      | "EnvelopeCreated"
-      | "EnvelopeRefunded"
-  ): EventFragment;
+	getEvent(
+		nameOrSignatureOrTopic:
+			| "EnvelopeClaimed"
+			| "EnvelopeCompleted"
+			| "EnvelopeCreated"
+			| "EnvelopeRefunded",
+	): EventFragment;
 
-  encodeFunctionData(
-    functionFragment: "claimEnvelope",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "createEnvelope",
-    values: [BigNumberish, boolean, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "envelopes",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getClaimAmount",
-    values: [BigNumberish, AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getClaimers",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getEnvelopeInfo",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getTotalEnvelopes",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "hasClaimed",
-    values: [BigNumberish, AddressLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "nextEnvelopeId",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "refundEnvelope",
-    values: [BigNumberish]
-  ): string;
+	encodeFunctionData(
+		functionFragment: "claimEnvelope",
+		values: [BigNumberish],
+	): string;
+	encodeFunctionData(
+		functionFragment: "createEnvelope",
+		values: [BigNumberish, boolean, string],
+	): string;
+	encodeFunctionData(
+		functionFragment: "envelopes",
+		values: [BigNumberish],
+	): string;
+	encodeFunctionData(
+		functionFragment: "getClaimAmount",
+		values: [BigNumberish, AddressLike],
+	): string;
+	encodeFunctionData(
+		functionFragment: "getClaimers",
+		values: [BigNumberish],
+	): string;
+	encodeFunctionData(
+		functionFragment: "getEnvelopeInfo",
+		values: [BigNumberish],
+	): string;
+	encodeFunctionData(
+		functionFragment: "getTotalEnvelopes",
+		values?: undefined,
+	): string;
+	encodeFunctionData(
+		functionFragment: "hasClaimed",
+		values: [BigNumberish, AddressLike],
+	): string;
+	encodeFunctionData(
+		functionFragment: "nextEnvelopeId",
+		values?: undefined,
+	): string;
+	encodeFunctionData(
+		functionFragment: "refundEnvelope",
+		values: [BigNumberish],
+	): string;
 
-  decodeFunctionResult(
-    functionFragment: "claimEnvelope",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "createEnvelope",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "envelopes", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getClaimAmount",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getClaimers",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getEnvelopeInfo",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getTotalEnvelopes",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "hasClaimed", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "nextEnvelopeId",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "refundEnvelope",
-    data: BytesLike
-  ): Result;
+	decodeFunctionResult(
+		functionFragment: "claimEnvelope",
+		data: BytesLike,
+	): Result;
+	decodeFunctionResult(
+		functionFragment: "createEnvelope",
+		data: BytesLike,
+	): Result;
+	decodeFunctionResult(functionFragment: "envelopes", data: BytesLike): Result;
+	decodeFunctionResult(
+		functionFragment: "getClaimAmount",
+		data: BytesLike,
+	): Result;
+	decodeFunctionResult(
+		functionFragment: "getClaimers",
+		data: BytesLike,
+	): Result;
+	decodeFunctionResult(
+		functionFragment: "getEnvelopeInfo",
+		data: BytesLike,
+	): Result;
+	decodeFunctionResult(
+		functionFragment: "getTotalEnvelopes",
+		data: BytesLike,
+	): Result;
+	decodeFunctionResult(functionFragment: "hasClaimed", data: BytesLike): Result;
+	decodeFunctionResult(
+		functionFragment: "nextEnvelopeId",
+		data: BytesLike,
+	): Result;
+	decodeFunctionResult(
+		functionFragment: "refundEnvelope",
+		data: BytesLike,
+	): Result;
 }
 
 export namespace EnvelopeClaimedEvent {
-  export type InputTuple = [
-    envelopeId: BigNumberish,
-    claimer: AddressLike,
-    amount: BigNumberish,
-    remainingCount: BigNumberish,
-    remainingAmount: BigNumberish
-  ];
-  export type OutputTuple = [
-    envelopeId: bigint,
-    claimer: string,
-    amount: bigint,
-    remainingCount: bigint,
-    remainingAmount: bigint
-  ];
-  export interface OutputObject {
-    envelopeId: bigint;
-    claimer: string;
-    amount: bigint;
-    remainingCount: bigint;
-    remainingAmount: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+	export type InputTuple = [
+		envelopeId: BigNumberish,
+		claimer: AddressLike,
+		amount: BigNumberish,
+		remainingCount: BigNumberish,
+		remainingAmount: BigNumberish,
+	];
+	export type OutputTuple = [
+		envelopeId: bigint,
+		claimer: string,
+		amount: bigint,
+		remainingCount: bigint,
+		remainingAmount: bigint,
+	];
+	export interface OutputObject {
+		envelopeId: bigint;
+		claimer: string;
+		amount: bigint;
+		remainingCount: bigint;
+		remainingAmount: bigint;
+	}
+	export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+	export type Filter = TypedDeferredTopicFilter<Event>;
+	export type Log = TypedEventLog<Event>;
+	export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace EnvelopeCompletedEvent {
-  export type InputTuple = [
-    envelopeId: BigNumberish,
-    creator: AddressLike,
-    totalAmount: BigNumberish,
-    totalCount: BigNumberish
-  ];
-  export type OutputTuple = [
-    envelopeId: bigint,
-    creator: string,
-    totalAmount: bigint,
-    totalCount: bigint
-  ];
-  export interface OutputObject {
-    envelopeId: bigint;
-    creator: string;
-    totalAmount: bigint;
-    totalCount: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+	export type InputTuple = [
+		envelopeId: BigNumberish,
+		creator: AddressLike,
+		totalAmount: BigNumberish,
+		totalCount: BigNumberish,
+	];
+	export type OutputTuple = [
+		envelopeId: bigint,
+		creator: string,
+		totalAmount: bigint,
+		totalCount: bigint,
+	];
+	export interface OutputObject {
+		envelopeId: bigint;
+		creator: string;
+		totalAmount: bigint;
+		totalCount: bigint;
+	}
+	export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+	export type Filter = TypedDeferredTopicFilter<Event>;
+	export type Log = TypedEventLog<Event>;
+	export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace EnvelopeCreatedEvent {
-  export type InputTuple = [
-    envelopeId: BigNumberish,
-    creator: AddressLike,
-    totalAmount: BigNumberish,
-    totalCount: BigNumberish,
-    isRandom: boolean,
-    message: string
-  ];
-  export type OutputTuple = [
-    envelopeId: bigint,
-    creator: string,
-    totalAmount: bigint,
-    totalCount: bigint,
-    isRandom: boolean,
-    message: string
-  ];
-  export interface OutputObject {
-    envelopeId: bigint;
-    creator: string;
-    totalAmount: bigint;
-    totalCount: bigint;
-    isRandom: boolean;
-    message: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+	export type InputTuple = [
+		envelopeId: BigNumberish,
+		creator: AddressLike,
+		totalAmount: BigNumberish,
+		totalCount: BigNumberish,
+		isRandom: boolean,
+		message: string,
+	];
+	export type OutputTuple = [
+		envelopeId: bigint,
+		creator: string,
+		totalAmount: bigint,
+		totalCount: bigint,
+		isRandom: boolean,
+		message: string,
+	];
+	export interface OutputObject {
+		envelopeId: bigint;
+		creator: string;
+		totalAmount: bigint;
+		totalCount: bigint;
+		isRandom: boolean;
+		message: string;
+	}
+	export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+	export type Filter = TypedDeferredTopicFilter<Event>;
+	export type Log = TypedEventLog<Event>;
+	export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace EnvelopeRefundedEvent {
-  export type InputTuple = [
-    envelopeId: BigNumberish,
-    creator: AddressLike,
-    refundAmount: BigNumberish
-  ];
-  export type OutputTuple = [
-    envelopeId: bigint,
-    creator: string,
-    refundAmount: bigint
-  ];
-  export interface OutputObject {
-    envelopeId: bigint;
-    creator: string;
-    refundAmount: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
+	export type InputTuple = [
+		envelopeId: BigNumberish,
+		creator: AddressLike,
+		refundAmount: BigNumberish,
+	];
+	export type OutputTuple = [
+		envelopeId: bigint,
+		creator: string,
+		refundAmount: bigint,
+	];
+	export interface OutputObject {
+		envelopeId: bigint;
+		creator: string;
+		refundAmount: bigint;
+	}
+	export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+	export type Filter = TypedDeferredTopicFilter<Event>;
+	export type Log = TypedEventLog<Event>;
+	export type LogDescription = TypedLogDescription<Event>;
 }
 
 export interface RedEnvelope extends BaseContract {
-  connect(runner?: ContractRunner | null): RedEnvelope;
-  waitForDeployment(): Promise<this>;
+	connect(runner?: ContractRunner | null): RedEnvelope;
+	waitForDeployment(): Promise<this>;
 
-  interface: RedEnvelopeInterface;
+	interface: RedEnvelopeInterface;
 
-  queryFilter<TCEvent extends TypedContractEvent>(
-    event: TCEvent,
-    fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
-  ): Promise<Array<TypedEventLog<TCEvent>>>;
-  queryFilter<TCEvent extends TypedContractEvent>(
-    filter: TypedDeferredTopicFilter<TCEvent>,
-    fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
-  ): Promise<Array<TypedEventLog<TCEvent>>>;
+	queryFilter<TCEvent extends TypedContractEvent>(
+		event: TCEvent,
+		fromBlockOrBlockhash?: string | number | undefined,
+		toBlock?: string | number | undefined,
+	): Promise<Array<TypedEventLog<TCEvent>>>;
+	queryFilter<TCEvent extends TypedContractEvent>(
+		filter: TypedDeferredTopicFilter<TCEvent>,
+		fromBlockOrBlockhash?: string | number | undefined,
+		toBlock?: string | number | undefined,
+	): Promise<Array<TypedEventLog<TCEvent>>>;
 
-  on<TCEvent extends TypedContractEvent>(
-    event: TCEvent,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
-  on<TCEvent extends TypedContractEvent>(
-    filter: TypedDeferredTopicFilter<TCEvent>,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
+	on<TCEvent extends TypedContractEvent>(
+		event: TCEvent,
+		listener: TypedListener<TCEvent>,
+	): Promise<this>;
+	on<TCEvent extends TypedContractEvent>(
+		filter: TypedDeferredTopicFilter<TCEvent>,
+		listener: TypedListener<TCEvent>,
+	): Promise<this>;
 
-  once<TCEvent extends TypedContractEvent>(
-    event: TCEvent,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
-  once<TCEvent extends TypedContractEvent>(
-    filter: TypedDeferredTopicFilter<TCEvent>,
-    listener: TypedListener<TCEvent>
-  ): Promise<this>;
+	once<TCEvent extends TypedContractEvent>(
+		event: TCEvent,
+		listener: TypedListener<TCEvent>,
+	): Promise<this>;
+	once<TCEvent extends TypedContractEvent>(
+		filter: TypedDeferredTopicFilter<TCEvent>,
+		listener: TypedListener<TCEvent>,
+	): Promise<this>;
 
-  listeners<TCEvent extends TypedContractEvent>(
-    event: TCEvent
-  ): Promise<Array<TypedListener<TCEvent>>>;
-  listeners(eventName?: string): Promise<Array<Listener>>;
-  removeAllListeners<TCEvent extends TypedContractEvent>(
-    event?: TCEvent
-  ): Promise<this>;
+	listeners<TCEvent extends TypedContractEvent>(
+		event: TCEvent,
+	): Promise<Array<TypedListener<TCEvent>>>;
+	listeners(eventName?: string): Promise<Array<Listener>>;
+	removeAllListeners<TCEvent extends TypedContractEvent>(
+		event?: TCEvent,
+	): Promise<this>;
 
-  claimEnvelope: TypedContractMethod<
-    [_envelopeId: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
+	claimEnvelope: TypedContractMethod<
+		[_envelopeId: BigNumberish],
+		[void],
+		"nonpayable"
+	>;
 
-  createEnvelope: TypedContractMethod<
-    [_count: BigNumberish, _isRandom: boolean, _message: string],
-    [bigint],
-    "payable"
-  >;
+	createEnvelope: TypedContractMethod<
+		[_count: BigNumberish, _isRandom: boolean, _message: string],
+		[bigint],
+		"payable"
+	>;
 
-  envelopes: TypedContractMethod<
-    [arg0: BigNumberish],
-    [
-      [
-        string,
-        bigint,
-        bigint,
-        bigint,
-        bigint,
-        boolean,
-        boolean,
-        string,
-        bigint
-      ] & {
-        creator: string;
-        totalAmount: bigint;
-        remainingAmount: bigint;
-        totalCount: bigint;
-        remainingCount: bigint;
-        isRandom: boolean;
-        isActive: boolean;
-        message: string;
-        createdAt: bigint;
-      }
-    ],
-    "view"
-  >;
+	envelopes: TypedContractMethod<
+		[arg0: BigNumberish],
+		[
+			[
+				string,
+				bigint,
+				bigint,
+				bigint,
+				bigint,
+				boolean,
+				boolean,
+				string,
+				bigint,
+			] & {
+				creator: string;
+				totalAmount: bigint;
+				remainingAmount: bigint;
+				totalCount: bigint;
+				remainingCount: bigint;
+				isRandom: boolean;
+				isActive: boolean;
+				message: string;
+				createdAt: bigint;
+			},
+		],
+		"view"
+	>;
 
-  getClaimAmount: TypedContractMethod<
-    [_envelopeId: BigNumberish, _user: AddressLike],
-    [bigint],
-    "view"
-  >;
+	getClaimAmount: TypedContractMethod<
+		[_envelopeId: BigNumberish, _user: AddressLike],
+		[bigint],
+		"view"
+	>;
 
-  getClaimers: TypedContractMethod<
-    [_envelopeId: BigNumberish],
-    [string[]],
-    "view"
-  >;
+	getClaimers: TypedContractMethod<
+		[_envelopeId: BigNumberish],
+		[string[]],
+		"view"
+	>;
 
-  getEnvelopeInfo: TypedContractMethod<
-    [_envelopeId: BigNumberish],
-    [
-      [
-        string,
-        bigint,
-        bigint,
-        bigint,
-        bigint,
-        boolean,
-        boolean,
-        string,
-        bigint
-      ] & {
-        creator: string;
-        totalAmount: bigint;
-        remainingAmount: bigint;
-        totalCount: bigint;
-        remainingCount: bigint;
-        isRandom: boolean;
-        isActive: boolean;
-        message: string;
-        createdAt: bigint;
-      }
-    ],
-    "view"
-  >;
+	getEnvelopeInfo: TypedContractMethod<
+		[_envelopeId: BigNumberish],
+		[
+			[
+				string,
+				bigint,
+				bigint,
+				bigint,
+				bigint,
+				boolean,
+				boolean,
+				string,
+				bigint,
+			] & {
+				creator: string;
+				totalAmount: bigint;
+				remainingAmount: bigint;
+				totalCount: bigint;
+				remainingCount: bigint;
+				isRandom: boolean;
+				isActive: boolean;
+				message: string;
+				createdAt: bigint;
+			},
+		],
+		"view"
+	>;
 
-  getTotalEnvelopes: TypedContractMethod<[], [bigint], "view">;
+	getTotalEnvelopes: TypedContractMethod<[], [bigint], "view">;
 
-  hasClaimed: TypedContractMethod<
-    [_envelopeId: BigNumberish, _user: AddressLike],
-    [boolean],
-    "view"
-  >;
+	hasClaimed: TypedContractMethod<
+		[_envelopeId: BigNumberish, _user: AddressLike],
+		[boolean],
+		"view"
+	>;
 
-  nextEnvelopeId: TypedContractMethod<[], [bigint], "view">;
+	nextEnvelopeId: TypedContractMethod<[], [bigint], "view">;
 
-  refundEnvelope: TypedContractMethod<
-    [_envelopeId: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
+	refundEnvelope: TypedContractMethod<
+		[_envelopeId: BigNumberish],
+		[void],
+		"nonpayable"
+	>;
 
-  getFunction<T extends ContractMethod = ContractMethod>(
-    key: string | FunctionFragment
-  ): T;
+	getFunction<T extends ContractMethod = ContractMethod>(
+		key: string | FunctionFragment,
+	): T;
 
-  getFunction(
-    nameOrSignature: "claimEnvelope"
-  ): TypedContractMethod<[_envelopeId: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "createEnvelope"
-  ): TypedContractMethod<
-    [_count: BigNumberish, _isRandom: boolean, _message: string],
-    [bigint],
-    "payable"
-  >;
-  getFunction(
-    nameOrSignature: "envelopes"
-  ): TypedContractMethod<
-    [arg0: BigNumberish],
-    [
-      [
-        string,
-        bigint,
-        bigint,
-        bigint,
-        bigint,
-        boolean,
-        boolean,
-        string,
-        bigint
-      ] & {
-        creator: string;
-        totalAmount: bigint;
-        remainingAmount: bigint;
-        totalCount: bigint;
-        remainingCount: bigint;
-        isRandom: boolean;
-        isActive: boolean;
-        message: string;
-        createdAt: bigint;
-      }
-    ],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "getClaimAmount"
-  ): TypedContractMethod<
-    [_envelopeId: BigNumberish, _user: AddressLike],
-    [bigint],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "getClaimers"
-  ): TypedContractMethod<[_envelopeId: BigNumberish], [string[]], "view">;
-  getFunction(
-    nameOrSignature: "getEnvelopeInfo"
-  ): TypedContractMethod<
-    [_envelopeId: BigNumberish],
-    [
-      [
-        string,
-        bigint,
-        bigint,
-        bigint,
-        bigint,
-        boolean,
-        boolean,
-        string,
-        bigint
-      ] & {
-        creator: string;
-        totalAmount: bigint;
-        remainingAmount: bigint;
-        totalCount: bigint;
-        remainingCount: bigint;
-        isRandom: boolean;
-        isActive: boolean;
-        message: string;
-        createdAt: bigint;
-      }
-    ],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "getTotalEnvelopes"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "hasClaimed"
-  ): TypedContractMethod<
-    [_envelopeId: BigNumberish, _user: AddressLike],
-    [boolean],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "nextEnvelopeId"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "refundEnvelope"
-  ): TypedContractMethod<[_envelopeId: BigNumberish], [void], "nonpayable">;
+	getFunction(
+		nameOrSignature: "claimEnvelope",
+	): TypedContractMethod<[_envelopeId: BigNumberish], [void], "nonpayable">;
+	getFunction(
+		nameOrSignature: "createEnvelope",
+	): TypedContractMethod<
+		[_count: BigNumberish, _isRandom: boolean, _message: string],
+		[bigint],
+		"payable"
+	>;
+	getFunction(nameOrSignature: "envelopes"): TypedContractMethod<
+		[arg0: BigNumberish],
+		[
+			[
+				string,
+				bigint,
+				bigint,
+				bigint,
+				bigint,
+				boolean,
+				boolean,
+				string,
+				bigint,
+			] & {
+				creator: string;
+				totalAmount: bigint;
+				remainingAmount: bigint;
+				totalCount: bigint;
+				remainingCount: bigint;
+				isRandom: boolean;
+				isActive: boolean;
+				message: string;
+				createdAt: bigint;
+			},
+		],
+		"view"
+	>;
+	getFunction(
+		nameOrSignature: "getClaimAmount",
+	): TypedContractMethod<
+		[_envelopeId: BigNumberish, _user: AddressLike],
+		[bigint],
+		"view"
+	>;
+	getFunction(
+		nameOrSignature: "getClaimers",
+	): TypedContractMethod<[_envelopeId: BigNumberish], [string[]], "view">;
+	getFunction(nameOrSignature: "getEnvelopeInfo"): TypedContractMethod<
+		[_envelopeId: BigNumberish],
+		[
+			[
+				string,
+				bigint,
+				bigint,
+				bigint,
+				bigint,
+				boolean,
+				boolean,
+				string,
+				bigint,
+			] & {
+				creator: string;
+				totalAmount: bigint;
+				remainingAmount: bigint;
+				totalCount: bigint;
+				remainingCount: bigint;
+				isRandom: boolean;
+				isActive: boolean;
+				message: string;
+				createdAt: bigint;
+			},
+		],
+		"view"
+	>;
+	getFunction(
+		nameOrSignature: "getTotalEnvelopes",
+	): TypedContractMethod<[], [bigint], "view">;
+	getFunction(
+		nameOrSignature: "hasClaimed",
+	): TypedContractMethod<
+		[_envelopeId: BigNumberish, _user: AddressLike],
+		[boolean],
+		"view"
+	>;
+	getFunction(
+		nameOrSignature: "nextEnvelopeId",
+	): TypedContractMethod<[], [bigint], "view">;
+	getFunction(
+		nameOrSignature: "refundEnvelope",
+	): TypedContractMethod<[_envelopeId: BigNumberish], [void], "nonpayable">;
 
-  getEvent(
-    key: "EnvelopeClaimed"
-  ): TypedContractEvent<
-    EnvelopeClaimedEvent.InputTuple,
-    EnvelopeClaimedEvent.OutputTuple,
-    EnvelopeClaimedEvent.OutputObject
-  >;
-  getEvent(
-    key: "EnvelopeCompleted"
-  ): TypedContractEvent<
-    EnvelopeCompletedEvent.InputTuple,
-    EnvelopeCompletedEvent.OutputTuple,
-    EnvelopeCompletedEvent.OutputObject
-  >;
-  getEvent(
-    key: "EnvelopeCreated"
-  ): TypedContractEvent<
-    EnvelopeCreatedEvent.InputTuple,
-    EnvelopeCreatedEvent.OutputTuple,
-    EnvelopeCreatedEvent.OutputObject
-  >;
-  getEvent(
-    key: "EnvelopeRefunded"
-  ): TypedContractEvent<
-    EnvelopeRefundedEvent.InputTuple,
-    EnvelopeRefundedEvent.OutputTuple,
-    EnvelopeRefundedEvent.OutputObject
-  >;
+	getEvent(
+		key: "EnvelopeClaimed",
+	): TypedContractEvent<
+		EnvelopeClaimedEvent.InputTuple,
+		EnvelopeClaimedEvent.OutputTuple,
+		EnvelopeClaimedEvent.OutputObject
+	>;
+	getEvent(
+		key: "EnvelopeCompleted",
+	): TypedContractEvent<
+		EnvelopeCompletedEvent.InputTuple,
+		EnvelopeCompletedEvent.OutputTuple,
+		EnvelopeCompletedEvent.OutputObject
+	>;
+	getEvent(
+		key: "EnvelopeCreated",
+	): TypedContractEvent<
+		EnvelopeCreatedEvent.InputTuple,
+		EnvelopeCreatedEvent.OutputTuple,
+		EnvelopeCreatedEvent.OutputObject
+	>;
+	getEvent(
+		key: "EnvelopeRefunded",
+	): TypedContractEvent<
+		EnvelopeRefundedEvent.InputTuple,
+		EnvelopeRefundedEvent.OutputTuple,
+		EnvelopeRefundedEvent.OutputObject
+	>;
 
-  filters: {
-    "EnvelopeClaimed(uint256,address,uint256,uint256,uint256)": TypedContractEvent<
-      EnvelopeClaimedEvent.InputTuple,
-      EnvelopeClaimedEvent.OutputTuple,
-      EnvelopeClaimedEvent.OutputObject
-    >;
-    EnvelopeClaimed: TypedContractEvent<
-      EnvelopeClaimedEvent.InputTuple,
-      EnvelopeClaimedEvent.OutputTuple,
-      EnvelopeClaimedEvent.OutputObject
-    >;
+	filters: {
+		"EnvelopeClaimed(uint256,address,uint256,uint256,uint256)": TypedContractEvent<
+			EnvelopeClaimedEvent.InputTuple,
+			EnvelopeClaimedEvent.OutputTuple,
+			EnvelopeClaimedEvent.OutputObject
+		>;
+		EnvelopeClaimed: TypedContractEvent<
+			EnvelopeClaimedEvent.InputTuple,
+			EnvelopeClaimedEvent.OutputTuple,
+			EnvelopeClaimedEvent.OutputObject
+		>;
 
-    "EnvelopeCompleted(uint256,address,uint256,uint256)": TypedContractEvent<
-      EnvelopeCompletedEvent.InputTuple,
-      EnvelopeCompletedEvent.OutputTuple,
-      EnvelopeCompletedEvent.OutputObject
-    >;
-    EnvelopeCompleted: TypedContractEvent<
-      EnvelopeCompletedEvent.InputTuple,
-      EnvelopeCompletedEvent.OutputTuple,
-      EnvelopeCompletedEvent.OutputObject
-    >;
+		"EnvelopeCompleted(uint256,address,uint256,uint256)": TypedContractEvent<
+			EnvelopeCompletedEvent.InputTuple,
+			EnvelopeCompletedEvent.OutputTuple,
+			EnvelopeCompletedEvent.OutputObject
+		>;
+		EnvelopeCompleted: TypedContractEvent<
+			EnvelopeCompletedEvent.InputTuple,
+			EnvelopeCompletedEvent.OutputTuple,
+			EnvelopeCompletedEvent.OutputObject
+		>;
 
-    "EnvelopeCreated(uint256,address,uint256,uint256,bool,string)": TypedContractEvent<
-      EnvelopeCreatedEvent.InputTuple,
-      EnvelopeCreatedEvent.OutputTuple,
-      EnvelopeCreatedEvent.OutputObject
-    >;
-    EnvelopeCreated: TypedContractEvent<
-      EnvelopeCreatedEvent.InputTuple,
-      EnvelopeCreatedEvent.OutputTuple,
-      EnvelopeCreatedEvent.OutputObject
-    >;
+		"EnvelopeCreated(uint256,address,uint256,uint256,bool,string)": TypedContractEvent<
+			EnvelopeCreatedEvent.InputTuple,
+			EnvelopeCreatedEvent.OutputTuple,
+			EnvelopeCreatedEvent.OutputObject
+		>;
+		EnvelopeCreated: TypedContractEvent<
+			EnvelopeCreatedEvent.InputTuple,
+			EnvelopeCreatedEvent.OutputTuple,
+			EnvelopeCreatedEvent.OutputObject
+		>;
 
-    "EnvelopeRefunded(uint256,address,uint256)": TypedContractEvent<
-      EnvelopeRefundedEvent.InputTuple,
-      EnvelopeRefundedEvent.OutputTuple,
-      EnvelopeRefundedEvent.OutputObject
-    >;
-    EnvelopeRefunded: TypedContractEvent<
-      EnvelopeRefundedEvent.InputTuple,
-      EnvelopeRefundedEvent.OutputTuple,
-      EnvelopeRefundedEvent.OutputObject
-    >;
-  };
+		"EnvelopeRefunded(uint256,address,uint256)": TypedContractEvent<
+			EnvelopeRefundedEvent.InputTuple,
+			EnvelopeRefundedEvent.OutputTuple,
+			EnvelopeRefundedEvent.OutputObject
+		>;
+		EnvelopeRefunded: TypedContractEvent<
+			EnvelopeRefundedEvent.InputTuple,
+			EnvelopeRefundedEvent.OutputTuple,
+			EnvelopeRefundedEvent.OutputObject
+		>;
+	};
 }

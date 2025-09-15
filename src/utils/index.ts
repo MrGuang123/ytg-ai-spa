@@ -4,11 +4,11 @@
  * @returns 返回倒序后的新数组（不改变原数组）
  */
 export function reverseArray<T>(arr: T[]): T[] {
-  if (!Array.isArray(arr)) {
-    throw new Error('Input must be an array');
-  }
-  
-  return [...arr].reverse();
+	if (!Array.isArray(arr)) {
+		throw new Error("Input must be an array");
+	}
+
+	return [...arr].reverse();
 }
 
 /**
@@ -17,9 +17,9 @@ export function reverseArray<T>(arr: T[]): T[] {
  * @returns 返回倒序后的原数组
  */
 export function reverseArrayInPlace<T>(arr: T[]): T[] {
-  if (!Array.isArray(arr)) {
-    throw new Error('Input must be an array');
-  }
-  
-  return arr.reverse();
+	if (!Array.isArray(arr)) {
+		throw new Error("Input must be an array");
+	}
+
+	return arr.reverse();
 }
