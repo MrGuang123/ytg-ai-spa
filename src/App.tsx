@@ -1,5 +1,8 @@
+import { useRoutes } from "react-router-dom";
+import Routes from "@routes/index";
+
 const App = () => {
-	return <div className="text-3xl font-bold underline">App</div>;
+	return useRoutes(Routes);
 };
 
 App.whyDidYouRender = true;
