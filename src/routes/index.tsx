@@ -1,48 +1,33 @@
-import { lazy, Suspense } from "react";
-import { Navigate, Outlet, type RouteObject } from "react-router-dom";
+import { lazy } from 'react';
+import { Navigate, type RouteObject } from 'react-router-dom';
+import Layout from '../layout/Layout';
 
-const Index = lazy(() => import("@pages/Index"));
+const CreateRedEnvelope = lazy(() => import('@pages/CreateRedEnvelope'));
+const ClaimRedEnvelope = lazy(() => import('@pages/ClaimRedEnvelope'));
 
-const Layout = () => {
-	return (
-		<Suspense fallback={<div>Loading...</div>}>
-			<Outlet />
-		</Suspense>
-	);
-};
-
-const Routes: RouteObject[] = [];
-
-const mainRoutes = [
-	{
-		path: "/",
-		element: <Layout />,
-		children: [
-			{
-				path: "/",
-				element: <Index />,
-			},
-		],
-	},
-	{
-		path: "*",
-		element: <Navigate to="/" replace />,
-	},
+const Routes: RouteObject[] = [
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/create" replace />,
+      },
+      {
+        path: '/create',
+        element: <CreateRedEnvelope />,
+      },
+      {
+        path: '/claim',
+        element: <ClaimRedEnvelope />,
+      },
+    ],
+  },
+  {
+    path: '*',
+    element: <Navigate to="/" replace />,
+  },
 ];
-
-const businessRoutes = [
-	{
-		path: "/business",
-		element: <Layout />,
-		children: [
-			{
-				path: "/business",
-				element: <Index />,
-			},
-		],
-	},
-];
-
-Routes.push(...mainRoutes, ...businessRoutes);
 
 export default Routes;
