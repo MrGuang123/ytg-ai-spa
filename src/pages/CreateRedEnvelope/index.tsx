@@ -1,7 +1,5 @@
-import React from 'react';
-
 const CreateRedEnvelope = () => {
-  return <div>创建红包页面</div>;
+	return <div>创建红包页面</div>;
 };
 
 export default CreateRedEnvelope;
