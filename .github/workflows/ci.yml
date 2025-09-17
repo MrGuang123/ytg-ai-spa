@@ -1,0 +1,70 @@
+# 工作流名称
+name: CI-Check-Test
+# 工作流触发条件
+on:
+  # 当有代码推送到master分支时触发
+  push:
+    branches: ['master']
+  # 当有人创建了一个指向master分支的PR，或者更新了这个PR时运行。
+  # 这个非常有用，可以在代码合并前就发现问题。
+  pull_request:
+    branches: ['master']
+
+# 定义了工作流需要执行的任务。
+jobs:
+  # 任务ID为lint-and-test
+  lint-and-test:
+    # 任务运行环境为最新的Ubuntu系统
+    runs-on: ubuntu-latest
+    # 具体执行的步骤
+    steps:
+      # 第一步：将仓库的代码克隆到新的运行环境上
+      - name: Checkout code
+        uses: actions/checkout@v4
+        # 第二步：设置node.js环境，启用yarn的依赖缓存，下次运行时
+        # 不需要重新下载依赖，节省时间
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+      # 安装依赖，使用yarn，并冻结版本，保证与lockfile版本一致
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        # 运行专为CI准备的lint
+      - name: Run Linter
+        run: yarn lint:ci
+        # 运行测试
+      - name: Run Tests
+        run: yarn test
+  # # 新增一个ai-analysis任务
+  # ai-analysis:
+  #   runs-on: ubuntu-latest
+  #   # 希望在lint-and-test任务执行之后再执行
+  #   needs: lint-and-test
+  #   steps:
+  #     # 1. 检出代码，需要完整历史记录
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         # 获取所有历史记录，以便git diff能正常工作
+  #         fetch-depth: 0
+  #     # 2. 设置node.js环境，启用yarn的依赖缓存，下次运行时不需要重新下载依赖，节省时间
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
+  #         cache: 'yarn'
+  #     # 3. 安装依赖，使用yarn，并冻结版本，保证与lockfile版本一致
+  #     - name: Install dependencies
+  #       run: yarn install --frozen-lockfile
+  #     # 4. 运行AI分析
+  #     - name: Run AI Analysis
+  #       # 这里后面尝试，是否能放到scripts中，然后用scripty执行
+  #       run: node scripts/run-analysis.js
+  #       # 设置MASTRA_API_KEY1环境变量，这个变量在github的settings - Secrets and variables - Actions - new repository secret中创建
+  #       # 这个可以确保秘钥不会被硬编码在代码中
+  #       env:
+  #         MASTRA_API_KEY1: ${{ secrets.MASTRA_API_KEY1 }}
+  #         COMMIT_BEFORE: ${{ github.event.before }}
+  #         COMMIT_AFTER: ${{ github.event.after }}

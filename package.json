@@ -19,9 +19,11 @@
     "client:server": "webpack serve --mode development",
     "client:prod": "scripty",
     "lint": "biome check --write ./src",
+    "lint:ci": "biome ci ./src",
     "prepare": "husky"
   },
   "dependencies": {
+    "@mastra/client-js": "^0.12.3",
     "ethers": "^6.15.0",
     "immer": "^10.1.3",
     "jotai": "^2.13.1",
