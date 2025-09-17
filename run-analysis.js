@@ -102,3 +102,42 @@ main().catch(err => {
   console.error('An unexpected error occurred:', err);
   process.exit(1);
 });
+
+// const userMessage: Message = {
+//   id: Date.now().toString(),
+//   role: "user",
+//   content: input.trim(),
+//   timestamp: new Date(),
+// };
+// // 获取智能体
+// const agent = mastraClient.getAgent(
+//   "studyAssistantAgentDeepSeek"
+// );
+
+// // 流式响应
+// const streamResponse = await agent.stream({
+//   messages: [
+//     {
+//       role: "user",
+//       content: userMessage.content,
+//     },
+//   ],
+// });
+
+// // 处理流式数据
+// streamResponse.processDataStream({
+//   onTextPart: (text) => {
+//     console.log("收到文本:", text);
+//     // 更新 UI - 追加文本到当前消息
+//     setMessages((prev) =>
+//       prev.map((msg) =>
+//         msg.id === assistantMessageId
+//           ? { ...msg, content: msg.content + text }
+//           : msg
+//       )
+//     );
+//   },
+//   onToolCallPart: (toolCall) => {
+//     console.log("工具调用:", toolCall);
+//   },
+// });
