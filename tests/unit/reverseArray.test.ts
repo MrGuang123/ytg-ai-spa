@@ -1,4 +1,4 @@
-import { reverseArray, reverseArrayInPlace } from '@utils/index';
+import { reverseArray, reverseArrayInPlace } from '@/utils/index';
 
 describe('数组倒序工具函数测试', () => {
   describe('reverseArray', () => {

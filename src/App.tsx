@@ -1,11 +1,13 @@
-import Routes from "@routes/index";
 import { StrictMode } from "react";
 import { BrowserRouter, useRoutes } from "react-router-dom";
+import AppRoutes from "@/routes";
 
 const App = () => {
 	return (
 		<StrictMode>
-			<BrowserRouter>{useRoutes(Routes)}</BrowserRouter>
+			<BrowserRouter>
+				<AppRoutes />
+			</BrowserRouter>
 		</StrictMode>
 	);
 };

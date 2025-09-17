@@ -11,13 +11,13 @@
     "test": "tests"
   },
   "scripts": {
+    "client:dev": "scripty",
+    "client:server": "webpack serve --mode development",
+    "client:prod": "scripty",
     "test:e2e": "cypress open",
     "test": "jest --collectCoverage",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "client:dev": "scripty",
-    "client:server": "webpack serve --mode development",
-    "client:prod": "scripty",
     "lint": "biome check --write ./src",
     "lint:ci": "biome ci ./src",
     "prepare": "husky"

@@ -1,6 +1,6 @@
-import { Header, Loading } from "@components/index";
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
+import { Header, Loading } from "@/components/index";
 
 const Layout = () => {
 	return (

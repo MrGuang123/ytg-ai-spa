@@ -18,16 +18,7 @@ const webpackBaseConfig = {
   // },
   resolve: {
     alias: {
-      '@/*': ['src/*'],
-      '@layout/*': ['src/layout/*'],
-      '@routes/*': ['src/routes/*'],
-      '@pages/*': ['src/pages/*'],
-      '@hooks/*': ['src/hooks/*'],
-      '@utils/*': ['src/utils/*'],
-      '@components/*': ['src/components/*'],
-      '@abis/*': ['src/abis/*'],
-      '@connections/*': ['src/connections/*'],
-      '@constants/*': ['src/constants/*'],
+      '@': resolve(__dirname, '../src'),
     },
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
