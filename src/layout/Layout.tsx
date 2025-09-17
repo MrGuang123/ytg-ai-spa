@@ -4,9 +4,9 @@ import { Header, Loading } from "@/components/index";
 
 const Layout = () => {
 	return (
-		<div>
+		<div className="min-h-screen relative">
 			<Header />
-			<main>
+			<main className="relative">
 				<Suspense fallback={<Loading />}>
 					<Outlet />
 				</Suspense>
