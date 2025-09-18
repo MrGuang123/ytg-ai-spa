@@ -1,5 +1,8 @@
+const { TextEncoder, TextDecoder } = require('util');
+
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
-  testEnvironment: 'jest-environment-jsdom',
+  testEnvironment: './jest.custom-environment.js',
   roots: ['<rootDir>/tests', '<rootDir>/src'],
   testMatch: ['<rootDir>/tests/**/*.(test|spec).(ts|tsx|js)'],
   transform: {
@@ -7,8 +10,10 @@ module.exports = {
   },
   //   TextEncoder和TextDecoder在JSDOM中不可用，所以需要手动引入，测试环境在执行 setup 文件之前，就已经需要这个 API 了。
   globals: {
-    TextEncoder: require('util').TextEncoder,
-    TextDecoder: require('util').TextDecoder,
+    // This is kept for environments that might not use the custom environment,
+    // but the primary solution is the custom environment itself.
+    TextEncoder: TextEncoder,
+    TextDecoder: TextDecoder,
   },
   collectCoverageFrom: ['src/**/*.(ts|tsx)', '!src/**/*.d.ts', '!src/index.tsx', '!src/wdyr.tsx'],
   //   生成覆盖率报告的路径
