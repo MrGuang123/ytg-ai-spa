@@ -2,28 +2,7 @@ import { ethers } from "ethers";
 import { AlertCircle, ChevronDown, LogOut, User, Wallet } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-
-// 支持的网络配置
-const SUPPORTED_NETWORKS = {
-	1: {
-		name: "以太坊主网",
-		symbol: "ETH",
-		rpcUrl: "https://ethereum-rpc.publicnode.com",
-		blockExplorer: "https://etherscan.io",
-	},
-	11155111: {
-		name: "Sepolia 测试网",
-		symbol: "ETH",
-		rpcUrl: "https://sepolia.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-		blockExplorer: "https://sepolia.etherscan.io",
-	},
-	31337: {
-		name: "本地网络",
-		symbol: "ETH",
-		rpcUrl: "http://localhost:8545",
-		blockExplorer: null,
-	},
-} as const;
+import { SUPPORTED_NETWORKS } from "@/constants";
 
 interface WalletState {
 	address: string | null;
