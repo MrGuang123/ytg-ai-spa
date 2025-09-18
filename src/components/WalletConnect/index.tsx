@@ -3,14 +3,13 @@ import { AlertCircle, ChevronDown, LogOut, User, Wallet } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { SUPPORTED_NETWORKS } from "@/constants";
+import { useEns } from "@/hooks/useEns";
 
 interface WalletState {
 	address: string | null;
 	isConnected: boolean;
 	chainId: number | null;
 	balance: string | null;
-	ensName: string | null;
-	ensAvatar: string | null;
 }
 
 const WalletConnect = () => {
@@ -19,13 +18,12 @@ const WalletConnect = () => {
 		isConnected: false,
 		chainId: null,
 		balance: null,
-		ensName: null,
-		ensAvatar: null,
 	});
 	const [isConnecting, setIsConnecting] = useState(false);
 	const [showUserMenu, setShowUserMenu] = useState(false);
 	const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
 	const buttonRef = useRef<HTMLButtonElement>(null);
+	const { ensName, ensAvatar } = useEns(walletState.address);
 
 	const disconnectWallet = useCallback(() => {
 		setWalletState({
@@ -33,8 +31,6 @@ const WalletConnect = () => {
 			isConnected: false,
 			chainId: null,
 			balance: null,
-			ensName: null,
-			ensAvatar: null,
 		});
 		setShowUserMenu(false);
 	}, []);
@@ -56,13 +52,6 @@ const WalletConnect = () => {
 					isConnected: true,
 					chainId: Number(network.chainId),
 					balance: ethers.formatEther(balance),
-					// 保持已有的 ENS 信息，除非地址发生变化
-					...(prev.address !== accounts[0].address
-						? {
-								ensName: null,
-								ensAvatar: null,
-							}
-						: {}),
 				}));
 			}
 		} catch (error) {
@@ -70,167 +59,35 @@ const WalletConnect = () => {
 		}
 	}, []);
 
-	const fetchENSInfo = useCallback(async (address: string) => {
-		try {
-			console.log(`开始查询地址 ${address} 的ENS信息（仅查询一次）...`);
-
-			// 使用最稳定的方式：指定静态网络的 JsonRpcProvider
-			const stableProviders = [
-				"https://eth.llamarpc.com",
-				"https://rpc.ankr.com/eth",
-				"https://cloudflare-eth.com",
-			];
-
-			for (const rpcUrl of stableProviders) {
-				try {
-					console.log(`尝试使用稳定提供者: ${rpcUrl}`);
-
-					// 创建提供者时指定静态网络，避免网络检测
-					const provider = new ethers.JsonRpcProvider(rpcUrl, 1, {
-						staticNetwork: ethers.Network.from(1),
-					});
-
-					// 设置超时
-					const createTimeoutPromise = (ms: number, name: string) => {
-						return new Promise((_, reject) => {
-							setTimeout(() => reject(new Error(`${name}超时`)), ms);
-						});
-					};
-
-					// 查询 ENS 名称
-					const namePromise = provider.lookupAddress(address);
-					const ensName = (await Promise.race([
-						namePromise,
-						createTimeoutPromise(5000, "ENS名称查询"),
-					])) as string | null;
-
-					if (ensName) {
-						console.log(`ENS名称查询成功: ${ensName}`);
-						let ensAvatar = null;
-
-						// 查询 ENS 头像
-						try {
-							console.log(`开始获取 ${ensName} 的头像...`);
-							const resolverPromise = provider.getResolver(ensName);
-							const resolver = (await Promise.race([
-								resolverPromise,
-								createTimeoutPromise(5000, "Resolver查询"),
-							])) as ethers.EnsResolver | null;
-
-							if (resolver) {
-								const avatarPromise = resolver.getAvatar();
-								ensAvatar = (await Promise.race([
-									avatarPromise,
-									createTimeoutPromise(5000, "头像查询"),
-								])) as string | null;
-
-								if (ensAvatar) {
-									console.log(`ENS头像获取成功: ${ensAvatar}`);
-								} else {
-									console.log("该ENS没有设置头像");
-								}
-							}
-						} catch (avatarError) {
-							console.warn(`获取 ${ensName} 头像失败:`, avatarError);
-							// 头像获取失败不影响名称显示
-						}
-
-						// 更新状态
-						setWalletState((prev) => ({
-							...prev,
-							ensName,
-							ensAvatar,
-						}));
-
-						console.log(
-							`ENS信息获取完成 - 名称: ${ensName}, 头像: ${ensAvatar ? "有" : "无"}`,
-						);
-						return; // 成功获取，退出循环
-					} else {
-						console.log(`地址 ${address} 没有ENS名称`);
-					}
-				} catch (providerError) {
-					const errorMsg =
-						providerError instanceof Error
-							? providerError.message
-							: String(providerError);
-					console.warn(`提供者 ${rpcUrl} 查询失败:`, errorMsg);
-				}
-			}
-
-			console.log("所有提供者都无法查询到ENS信息");
-		} catch (error) {
-			console.error("获取ENS信息失败:", error);
-		}
-	}, []);
-
-	const handleAccountsChanged = useCallback(
-		(accounts: string[]) => {
-			if (accounts.length === 0) {
+	// 检查钱包连接状态
+	useEffect(() => {
+		const handleAccountsChanged = (accounts: unknown) => {
+			if (Array.isArray(accounts) && accounts.length === 0) {
 				disconnectWallet();
 			} else {
 				checkWalletConnection();
 			}
-		},
-		[disconnectWallet, checkWalletConnection],
-	);
-
-	const handleChainChanged = useCallback(() => {
-		checkWalletConnection();
-	}, [checkWalletConnection]);
-
-	const handleDisconnect = useCallback(() => {
-		disconnectWallet();
-	}, [disconnectWallet]);
-
-	// 检查钱包连接状态
-	useEffect(() => {
-		const handleAccountsChangedWrapper = (accounts: unknown) => {
-			handleAccountsChanged(accounts as string[]);
-		};
-
-		const handleChainChangedWrapper = () => {
-			handleChainChanged();
-		};
-
-		const handleDisconnectWrapper = () => {
-			handleDisconnect();
 		};
 
 		checkWalletConnection();
 
 		if (window.ethereum) {
-			window.ethereum.on("accountsChanged", handleAccountsChangedWrapper);
-			window.ethereum.on("chainChanged", handleChainChangedWrapper);
-			window.ethereum.on("disconnect", handleDisconnectWrapper);
+			window.ethereum.on("accountsChanged", handleAccountsChanged);
+			window.ethereum.on("chainChanged", checkWalletConnection);
+			window.ethereum.on("disconnect", disconnectWallet);
 		}
 
 		return () => {
 			if (window.ethereum) {
 				window.ethereum.removeListener(
 					"accountsChanged",
-					handleAccountsChangedWrapper,
+					handleAccountsChanged,
 				);
-				window.ethereum.removeListener(
-					"chainChanged",
-					handleChainChangedWrapper,
-				);
-				window.ethereum.removeListener("disconnect", handleDisconnectWrapper);
+				window.ethereum.removeListener("chainChanged", checkWalletConnection);
+				window.ethereum.removeListener("disconnect", disconnectWallet);
 			}
 		};
-	}, [
-		checkWalletConnection,
-		handleAccountsChanged,
-		handleChainChanged,
-		handleDisconnect,
-	]);
-
-	// 获取ENS信息（只在地址变化时查询一次）
-	useEffect(() => {
-		if (walletState.address && !walletState.ensName) {
-			fetchENSInfo(walletState.address);
-		}
-	}, [walletState.address, walletState.ensName, fetchENSInfo]);
+	}, [checkWalletConnection, disconnectWallet]);
 
 	const connectWallet = async () => {
 		if (!window.ethereum) {
@@ -359,11 +216,11 @@ const WalletConnect = () => {
 						}`}
 					>
 						{/* 只有当有 ENS 信息时才显示头像和名称 */}
-						{walletState.ensName || walletState.ensAvatar ? (
+						{ensName || ensAvatar ? (
 							<>
-								{walletState.ensAvatar ? (
+								{ensAvatar ? (
 									<img
-										src={walletState.ensAvatar}
+										src={ensAvatar}
 										alt="ENS Avatar"
 										className="w-8 h-8 rounded-full border-2 border-white/30"
 									/>
@@ -372,18 +229,18 @@ const WalletConnect = () => {
 										<User className="w-5 h-5" />
 									</div>
 								)}
-								{walletState.ensName && (
+								{ensName && (
 									<div className="text-left hidden lg:block">
-										<div className="text-sm font-semibold">
-											{walletState.ensName}
-										</div>
+										<div className="text-sm font-semibold">{ensName}</div>
 										<div className="text-xs text-white/70">
 											{formatBalance(walletState.balance)} ETH
 										</div>
 									</div>
 								)}
 								<ChevronDown
-									className={`w-4 h-4 transition-transform duration-200 ${showUserMenu ? "rotate-180" : ""}`}
+									className={`w-4 h-4 transition-transform duration-200 ${
+										showUserMenu ? "rotate-180" : ""
+									}`}
 								/>
 							</>
 						) : (
@@ -394,7 +251,9 @@ const WalletConnect = () => {
 									{formatAddress(walletState.address || "")}
 								</span>
 								<ChevronDown
-									className={`w-4 h-4 transition-transform duration-200 ${showUserMenu ? "rotate-180" : ""}`}
+									className={`w-4 h-4 transition-transform duration-200 ${
+										showUserMenu ? "rotate-180" : ""
+									}`}
 								/>
 							</>
 						)}
@@ -440,9 +299,9 @@ const WalletConnect = () => {
 						>
 							<div className="px-4 py-3 border-b border-gray-100">
 								<div className="flex items-center space-x-3">
-									{walletState.ensAvatar ? (
+									{ensAvatar ? (
 										<img
-											src={walletState.ensAvatar}
+											src={ensAvatar}
 											alt="ENS Avatar"
 											className="w-10 h-10 rounded-full"
 										/>
@@ -453,8 +312,7 @@ const WalletConnect = () => {
 									)}
 									<div>
 										<div className="font-semibold text-gray-900">
-											{walletState.ensName ||
-												formatAddress(walletState.address || "")}
+											{ensName || formatAddress(walletState.address || "")}
 										</div>
 										<div className="text-sm text-gray-500">
 											{formatAddress(walletState.address || "")}
@@ -474,7 +332,11 @@ const WalletConnect = () => {
 								<div className="flex justify-between items-center mt-1">
 									<span className="text-sm text-gray-600">网络</span>
 									<span
-										className={`text-sm font-medium ${isSupportedNetwork() ? "text-green-600" : "text-yellow-600"}`}
+										className={`text-sm font-medium ${
+											isSupportedNetwork()
+												? "text-green-600"
+												: "text-yellow-600"
+										}`}
 									>
 										{getCurrentNetwork()?.name ||
 											`未知网络 (${walletState.chainId})`}

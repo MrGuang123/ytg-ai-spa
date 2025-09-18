@@ -14,13 +14,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["jest", "node"],
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-    }
+      "@/*": ["src/*"]
+    },
+    "types": ["jest", "@testing-library/jest-dom", "node"]
   },
-
-  "include": ["src", "tests"]
+  "include": ["src", "tests", "jest.setup.ts"]
 }
