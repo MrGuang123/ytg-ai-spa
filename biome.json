@@ -18,7 +18,7 @@
     "rules": {
       "recommended": true,
       "a11y": {
-        "useKeyWithClickEvents": "off"
+        "recommended": false
       },
       "correctness": {
         "useExhaustiveDependencies": "warn"

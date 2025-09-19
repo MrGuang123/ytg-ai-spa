@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface EnsInfo {
 	name: string | null;
@@ -19,7 +19,7 @@ export const useEns = (address: string | null) => {
 	});
 	const [isLoading, setIsLoading] = useState(false);
 
-	const fetchEnsInfo = async (addr: string) => {
+	const fetchEnsInfo = useCallback(async (addr: string) => {
 		setIsLoading(true);
 		setEnsInfo({ name: null, avatar: null });
 
@@ -78,7 +78,7 @@ export const useEns = (address: string | null) => {
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}, []);
 
 	useEffect(() => {
 		if (!address) {
@@ -87,7 +87,7 @@ export const useEns = (address: string | null) => {
 		}
 
 		fetchEnsInfo(address);
-	}, [address]);
+	}, [address, fetchEnsInfo]);
 
 	return {
 		ensName: ensInfo.name,
